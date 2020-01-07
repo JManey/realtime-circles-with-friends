@@ -12,11 +12,18 @@ socket.on("update-player-list", function(data) {
   var playerList = "<li>" + data.join("</li><li>") + "</li>";
   players.innerHTML = playerList;
 });
+socket.on("printMessage", function(data) {
+  chat(data);
+});
 
 var circles = document.getElementById("circles");
 var players = document.getElementById("players");
 let clear = document.getElementById("clear");
 var initials = "";
+let messageInput = document.getElementById("message");
+let chatEl = document.getElementById("chat");
+let messageBtn = document.getElementById("message-btn");
+let message;
 
 window.onload = function() {
   let color = getRandomRGBA();
@@ -37,17 +44,41 @@ clear.addEventListener("click", function() {
   socket.emit("clearCircles");
 });
 
+messageBtn.addEventListener("click", function() {
+  message = getMessage();
+  // console.log("message clickhandler", message);
+  socket.emit("getMessage", {
+    initials: initials,
+    message: message
+  });
+});
+
+function chat({ message, initials }) {
+  let ele = document.createElement("li");
+  ele.textContent = `${initials}: ${message}`;
+  console.log(message);
+  chatEl.appendChild(ele);
+}
+
 function clearCircles() {
   circles.innerHTML = "";
 }
 
+function getMessage() {
+  let messageText = messageInput.value;
+  messageInput.value = "";
+  return messageText;
+
+  // console.log("getMessage function", message);
+}
+
 do {
   initials = getInitials();
-} while (initials.length < 2 || initials.length > 3);
+} while (initials.length < 2 || initials.length > 10);
 socket.emit("register-player", initials);
 
 function getInitials() {
-  var input = prompt("Please enter your initials");
+  var input = prompt("Please enter your Name");
   return input ? input.toUpperCase() : "";
 }
 

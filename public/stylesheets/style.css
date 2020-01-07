@@ -7,14 +7,27 @@ html, body {
   back
 }
 
+.container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 #circles {
-  width: 100%;
+  width: 70%;
   height: 100%;
 }
 
 #circles div {
   border-radius: 50%;
   position: absolute;
+}
+#chat-container {
+  align-content: left;
+  position: absolute;
+  top: 50px;
+  width: 30%;
+  height: 80%;
+  background-color: rgba(74, 58, 58, 0.283);
 }
 
 header {
@@ -45,6 +58,17 @@ footer {
 }
 
 li {
+  list-style: none;
+  padding: 4px;
+  
+}
+
+#chat {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+footer li {
   list-style: none;
   display: inline;
   font: 12px Arial;
